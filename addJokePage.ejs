@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Add Joke</title>
+  <style>
+    body {
+      background-color: yellow;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      margin: 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    form {
+      margin-top: 20px;
+    }
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #2196F3;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0b7dda;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Add a New Joke</h1>
+    <form id="jokeForm">
+      <input type="text" id="category" name="category" placeholder="Category" required>
+      <textarea id="joke" name="joke" placeholder="Your joke here..." rows="4" required></textarea>
+      <button type="submit">Add Joke</button>
+    </form>
+  </div>
+  <script>
+    document.getElementById('jokeForm').addEventListener('submit', async function(event) {
+      event.preventDefault();
+      const category = document.getElementById('category').value.trim();
+      const joke = document.getElementById('joke').value.trim();
+      try {
+        const response = await fetch('/api/jokes', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ category, joke })
+        });
+        if (response.ok) {
+          // Redirect to main.ejs with a message indicating success
+          window.location.href = '/?message=Joke%20added';
+        } else {
+          alert('Failed to add joke.');
+        }
+      } catch (error) {
+        console.error('Error adding joke:', error);
+        alert('Error adding joke.');
+      }
+    });
+  </script>
+</body>
+</html>
