@@ -5,7 +5,7 @@
   <title>Add Joke</title>
   <style>
     body {
-      background-color: yellow;
+      background-color: #FFE5E7;
       font-family: Arial, sans-serif;
       padding: 20px;
       margin: 0;
@@ -29,14 +29,15 @@
     }
     button {
       padding: 10px 20px;
-      background-color: #2196F3;
+      background-color: #FFB0B5;
       color: white;
       border: none;
       border-radius: 4px;
       cursor: pointer;
+      font-size: 1rem;
     }
     button:hover {
-      background-color: #0b7dda;
+      background-color: #FFC6CA;
     }
   </style>
 </head>
@@ -55,19 +56,16 @@
       const category = document.getElementById('category').value.trim();
       const joke = document.getElementById('joke').value.trim();
       try {
-        const response = await fetch('/api/jokes', {
+        const response = await fetch('https://backend-jokeapi.onrender.com/addJoke', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ category, joke })
         });
-        if (response.ok) {
-          // Redirect to main.ejs with a message indicating success
-          window.location.href = '/?message=Joke%20added';
-        } else {
+        if (!response.ok) {
           alert('Failed to add joke.');
+          return;
         }
+        window.location.href = 'index.html?message=Joke%20added';
       } catch (error) {
         console.error('Error adding joke:', error);
         alert('Error adding joke.');
